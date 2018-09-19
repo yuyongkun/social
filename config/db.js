@@ -1,0 +1,9 @@
+if(process.env.NODE_ENV==="production"){
+	module.exports={
+		dbURL:'mongodb://localhost/kcgl'
+	};
+}else{
+	module.exports={
+		dbURL:'mongodb://localhost:27017/kcgl'
+	};
+}
