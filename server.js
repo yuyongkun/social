@@ -1,39 +1,28 @@
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 const app = express();
-
-//引入数据库配置文件
-const dbConfig = require('./config/db');
-//connect mongoose
-mongoose.connect(dbConfig.dbURL, { useNewUrlParser: true }).then(() => {
-    console.log('mongodb connected...');
-}).catch((err) => {
-    console.log('数据库连接失败', err);
-});
-
-//load router
-const users = require('./routes/users');
-const ideas = require('./routes/ideas');
-
-// body-parse middleware
-app.use(bodyParser.json()); // parse application/json
-app.use(bodyParser.urlencoded({ //parse application/x-www-form-urlencoded
-    extended: false
+//body-parser
+// app.use(bodyParser.json());//parse application/json
+app.use(bodyParser.urlencoded({//parse application/x-www-form-urlencoded
+    extended:false
 }));
+//引入users
+const user=require('./router/api/users');
 
-//use router
-app.use('/users', users);
-app.use('/ideas', ideas);
-
-app.use(function (req, res, next) {
-    let err = new Error('Not Found');
-    err.status = '404';
-    next(err);
+//使用mongoose连接mongodb
+const db = require('./config/db').mongoURI;
+mongoose.connect(db).then(() => {
+    console.log('MongoDB Connected');
+}).catch((err) => {
+    console.log(err);
 });
-
+app.use('/api/users',user);
 const port = process.env.PORT || 5000;
+app.get('*', (req, res) => {
+    res.send('404');
+});
 app.listen(port, () => {
-    console.log(`server is started on ${port} `);
+    console.log(`server is start on ${port}`);
 });

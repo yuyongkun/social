@@ -1,9 +1,3 @@
-if(process.env.NODE_ENV==="production"){
-	module.exports={
-		dbURL:'mongodb://localhost/kcgl'
-	};
-}else{
-	module.exports={
-		dbURL:'mongodb://localhost:27017/kcgl'
-	};
-}
+module.exports={
+    mongoURI:'mongodb://test:yyk123456@ds249249.mlab.com:49249/restful-api-prod'
+};
