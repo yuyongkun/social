@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 const app = express();
+
 //body-parser
 // app.use(bodyParser.json());//parse application/json
 app.use(bodyParser.urlencoded({//parse application/x-www-form-urlencoded
-    extended:false
+    extended: false
 }));
-//引入users
-const user=require('./router/api/users');
 
 //使用mongoose连接mongodb
 const db = require('./config/db').mongoURI;
@@ -18,7 +18,15 @@ mongoose.connect(db).then(() => {
 }).catch((err) => {
     console.log(err);
 });
-app.use('/api/users',user);
+
+//passprot 初始化
+app.use(passport.initialize());
+require('./config/passport')(passport);
+
+//引入users
+const user = require('./router/api/users');
+app.use('/api/users', user);
+
 const port = process.env.PORT || 5000;
 app.get('*', (req, res) => {
     res.send('404');

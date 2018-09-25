@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
                 if (err) throw err;
                 if (match) {
                     //秘钥
-                    let jwtTokenSecret='socialyu';
+                    let jwtTokenSecret='secret';
                     //生成token
                     let token=jwt.sign(user,jwtTokenSecret,{
                         expiresIn:3600//设置过期时间，单位是秒
